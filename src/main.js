@@ -118,6 +118,19 @@ const input = {
   jumpQueued: false,
 };
 
+function resetInputState({ clearMomentum = false } = {}) {
+  input.forward = false;
+  input.backward = false;
+  input.left = false;
+  input.right = false;
+  input.jumpQueued = false;
+
+  if (clearMomentum) {
+    player.velocity.x = 0;
+    player.velocity.z = 0;
+  }
+}
+
 for (const type of blockTypes) {
   const slot = document.createElement("button");
   slot.className = "slot";
@@ -206,8 +219,14 @@ function buildInitialWorld() {
 
 function rebuildWorldMeshes() {
   pickables.length = 0;
+
   while (voxelGroup.children.length > 0) {
-    voxelGroup.remove(voxelGroup.children[0]);
+    const mesh = voxelGroup.children[0];
+    voxelGroup.remove(mesh);
+    if (mesh.isInstancedMesh && typeof mesh.dispose === "function") {
+      mesh.dispose();
+    }
+    mesh.userData.instanceLookup = null;
   }
 
   const groupedBlocks = new Map(blockTypes.map((type) => [type.id, []]));
@@ -608,7 +627,20 @@ renderer.domElement.addEventListener("contextmenu", (event) => {
 
 document.addEventListener("pointerlockchange", () => {
   isPointerLocked = document.pointerLockElement === renderer.domElement;
+  if (!isPointerLocked) {
+    resetInputState({ clearMomentum: true });
+  }
   updateStatusCard();
+});
+
+window.addEventListener("blur", () => {
+  resetInputState({ clearMomentum: true });
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "visible") {
+    resetInputState({ clearMomentum: true });
+  }
 });
 
 window.addEventListener("resize", () => {
