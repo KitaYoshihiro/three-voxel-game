@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Three Voxel Game</title>
+    <script type="module" src="./src/main.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="hud">
+        <div class="hud-top">
+          <div class="badge badge-accent">THREE VOXEL FIELD</div>
+          <div id="fps" class="badge">FPS 0</div>
+        </div>
+
+        <div class="crosshair" aria-hidden="true">
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="hud-bottom">
+          <div class="panel">
+            <p class="panel-title">Controls</p>
+            <p>Click to lock pointer. `WASD` move, `Space` jump.</p>
+            <p>Left click breaks blocks. Right click places blocks.</p>
+          </div>
+          <div id="hotbar" class="hotbar" aria-label="Block hotbar"></div>
+        </div>
+
+        <div id="status" class="status-card">
+          <div class="status-eyebrow">Ready</div>
+          <div class="status-title">Enter the voxel field</div>
+          <p>Click the scene to capture the mouse, then build and carve terrain with slots `1` to `5`.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
